@@ -6,21 +6,18 @@ import {handleError} from "./utils/error";
 import { database } from "./config/mongoDb";
 
 dotenv.config();
-
 const app = express();
 
 app.use(cors({
     origin: process.env.CORS_ORIGIN
 }))
-
+app.use(express.json());
 
 app.get('/', (req, res) => {
     res.send('hello world')
 })
 
-
 app.use(handleError);
-
 
 database();
 const PORT = Number(process.env.PORT);
