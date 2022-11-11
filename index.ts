@@ -3,6 +3,7 @@ import 'express-async-errors';
 import * as dotenv from 'dotenv';
 import cors from "cors";
 import {handleError} from "./utils/error";
+import { database } from "./config/mongoDb";
 
 dotenv.config();
 
@@ -20,6 +21,8 @@ app.get('/', (req, res) => {
 
 app.use(handleError);
 
+
+database();
 const PORT = Number(process.env.PORT);
 
 app.listen(PORT, '0.0.0.0', () => {
