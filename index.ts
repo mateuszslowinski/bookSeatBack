@@ -2,6 +2,7 @@ import express from "express";
 import 'express-async-errors';
 import * as dotenv from 'dotenv';
 import cors from "cors";
+import {handleError} from "./utils/error";
 
 dotenv.config();
 
@@ -11,12 +12,15 @@ app.use(cors({
     origin: process.env.CORS_ORIGIN
 }))
 
+
 app.get('/', (req, res) => {
     res.send('hello world')
 })
 
-const PORT = Number(process.env.PORT);
 
+app.use(handleError);
+
+const PORT = Number(process.env.PORT);
 
 app.listen(PORT, '0.0.0.0', () => {
     console.log(`Listing on http://localhost:${PORT}`)
