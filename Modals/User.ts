@@ -35,8 +35,18 @@ const userSchema = new mongoose.Schema({
         isAdmin: {
             type: Boolean,
             default: false
-        }
+        },
+        favorite_places: [
+            {
+                _id: {
+                    type: mongoose.Schema.Types.ObjectId,
+                    ref: "Restaurant"
+                }
+            }
+        ],
     },
+
+
     {timestamps: true}
 );
 
