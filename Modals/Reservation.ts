@@ -1,4 +1,8 @@
 import mongoose from "mongoose";
+import {ReservationType} from "../types";
+import {Document} from "mongodb";
+
+interface ReservationModal extends ReservationType, Document {}
 
 const reservationSchema = new mongoose.Schema({
         date: {
@@ -22,4 +26,4 @@ const reservationSchema = new mongoose.Schema({
     {timestamps: true}
 )
 
-export const ReservationSchema = mongoose.model('Reservation', reservationSchema)
+export const ReservationSchema = mongoose.model<ReservationModal>('Reservation', reservationSchema)
