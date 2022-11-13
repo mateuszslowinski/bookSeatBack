@@ -1,4 +1,8 @@
 import mongoose from "mongoose";
+import {Document} from "mongodb";
+import {RestaurantType} from "../types";
+
+interface RestaurantModal extends RestaurantType, Document {}
 
 const restaurantSchema = new mongoose.Schema({
         name: {
@@ -25,4 +29,4 @@ const restaurantSchema = new mongoose.Schema({
     {timestamps: true}
 )
 
-export const RestaurantSchema = mongoose.model('Restaurant', restaurantSchema)
+export const RestaurantSchema = mongoose.model<RestaurantModal>('Restaurant', restaurantSchema)
