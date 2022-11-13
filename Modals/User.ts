@@ -1,4 +1,8 @@
 import mongoose from "mongoose";
+import {Document} from "mongodb";
+import {UserTypes} from "../types";
+
+interface UserModal extends UserTypes, Document {}
 
 const userSchema = new mongoose.Schema({
         username: {
@@ -45,9 +49,7 @@ const userSchema = new mongoose.Schema({
             }
         ],
     },
-
-
     {timestamps: true}
 );
 
-export const User = mongoose.model('User', userSchema)
+export const User = mongoose.model<UserModal>('User', userSchema)
