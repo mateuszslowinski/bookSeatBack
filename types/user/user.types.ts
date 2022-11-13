@@ -6,6 +6,6 @@ export type UserType = {
     password: string,
     isAdmin: boolean,
     favorite_places: string[],
-    createdAt: Date;
-    updateAt: Date;
+    createdAt: Date,
+    updateAt: Date,
 }

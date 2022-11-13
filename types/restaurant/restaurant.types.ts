@@ -8,6 +8,6 @@ export type RestaurantType = {
         city: string,
     }
     image: string,
-    createdAt: Date;
-    updateAt: Date;
+    createdAt: Date,
+    updateAt: Date,
 }
