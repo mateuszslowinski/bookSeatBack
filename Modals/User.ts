@@ -1,8 +1,8 @@
 import mongoose from "mongoose";
 import {Document} from "mongodb";
-import {UserTypes} from "../types";
+import {UserType} from "../types";
 
-interface UserModal extends UserTypes, Document {}
+interface UserModal extends UserType, Document {}
 
 const userSchema = new mongoose.Schema({
         username: {
