@@ -15,7 +15,7 @@ app.use(cors({
 app.use(express.json());
 
 
-app.use('/',userRoute)
+app.use('/api',userRoute)
 app.use(handleError);
 
 database();
