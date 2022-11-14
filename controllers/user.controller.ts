@@ -32,7 +32,6 @@ export const userRegister = async (req: Request, res: Response) => {
             last_name,
         }).save();
 
-        const token = generateToken({id: String(user._id)}, '14d')
         res.status(201).json({
             id: user._id,
             username: user.username,
@@ -41,7 +40,7 @@ export const userRegister = async (req: Request, res: Response) => {
             favorite_places: user.favorite_places,
             first_name: user.first_name,
             last_name: user.last_name,
-            token: token,
+            token: generateToken({id: user._id}, '14d'),
 
         })
     } catch (e) {
