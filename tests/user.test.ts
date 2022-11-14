@@ -55,14 +55,25 @@ describe('user.ts', () => {
         });
     });
 
-    describe("POST /api//login", () => {
-        it("Checking login for incorrect email", async () => {
-            const email = 'test';
-            const password = defaultUser.password;
+    // describe("POST /api/login", () => {
+    //     it("Checking login for incorrect email", async () => {
+    //         const email = 'test';
+    //         const password = defaultUser.password;
+    //
+    //         const res = await request.post("/api/login").send({email,password});
+    //         expect(res.status).toBe(400);
+    //         expect(res.body.message).toBe("This email don't exits")
+    //     });
+    // });
+
+    describe("POST /api/login", () => {
+        it("Checking login for incorrect password", async () => {
+            const email = defaultUser.email;
+            const password = '123';
 
             const res = await request.post("/api/login").send({email,password});
             expect(res.status).toBe(400);
-            expect(res.body.message).toBe("This email don't exits")
+            expect(res.body.message).toBe("Password is incorrect")
         });
     });
 });
