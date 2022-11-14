@@ -16,7 +16,7 @@ describe('insert', () => {
             first_name: "janek",
             last_name: "nowak",
             email: "test@gmail.com",
-            password: "123",
+            password: "Haslo12345asd!",
             favorite_places: [],
             isAdmin: false,
         }
@@ -35,4 +35,14 @@ describe('insert', () => {
         const insertedUser = await User.findOne({username: 'janek'});
         expect(insertedUser.username).toBe('janek');
     });
+
+    it('check is validation of email ', async () => {
+        const user = await new User(defaultUser)
+        await user.save();
+
+        const insertedUser = await User.findOne({username: 'janek'});
+        expect(insertedUser.email).toContain('@');
+    });
+
+
 });
