@@ -7,7 +7,7 @@ import { database } from "./config/mongoDb";
 import { userRoute } from "./routes/user.route";
 
 dotenv.config();
-const app = express();
+export const app = express();
 
 app.use(cors({
     origin: process.env.CORS_ORIGIN
