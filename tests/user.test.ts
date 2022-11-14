@@ -33,7 +33,7 @@ describe('user.ts', () => {
 
     // describe("POST /register", () => {
     //     it("checking when email is taken", async () => {
-    //         const res = await request.post("/register").send(defaultUser);
+    //         const res = await request.post("/api/register").send(defaultUser);
     //         expect(res.body.message).toBe('Email is already taken')
     //         expect(res.status).toBe(400);
     //     });
@@ -41,7 +41,7 @@ describe('user.ts', () => {
 
     // describe("POST /register", () => {
     //     it("checking when password is incorrect", async () => {
-    //         const res = await request.post("/register").send(defaultUser);
+    //         const res = await request.post("/api/register").send(defaultUser);
     //         expect(res.body.message).toBe('password contains at least eight characters, including at least one number' +
     //             ' and includes both lower and uppercase letters and special characters')
     //         expect(res.status).toBe(400);
@@ -49,9 +49,20 @@ describe('user.ts', () => {
     // });
 
     describe("POST /register", () => {
-        it("Check route is create user into database", async () => {
-            const res = await request.post("/register").send(defaultUser);
+        it("Checking is route create user into database", async () => {
+            const res = await request.post("/api/register").send(defaultUser);
             expect(res.status).toBe(201);
+        });
+    });
+
+    describe("POST /api//login", () => {
+        it("Checking login for incorrect email", async () => {
+            const email = 'test';
+            const password = defaultUser.password;
+
+            const res = await request.post("/api/login").send({email,password});
+            expect(res.status).toBe(400);
+            expect(res.body.message).toBe("This email don't exits")
         });
     });
 });
