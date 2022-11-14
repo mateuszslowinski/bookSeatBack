@@ -61,7 +61,7 @@ describe('user.ts', () => {
             const password = defaultUser.password;
 
             const res = await request.post("/api/login").send({email,password});
-            expect(res.status).toBe(400);
+            expect(res.status).toBe(404);
             expect(res.body.message).toBe("This email don't exits")
         });
     });
@@ -84,6 +84,16 @@ describe('user.ts', () => {
 
             const res = await request.post("/api/login").send({email,password});
             expect(res.status).toBe(201);
+            expect(res.body.email).toBe(email)
+        });
+    });
+
+    describe("GET /api/profile", () => {
+        it(" login route", async () => {
+            const email = defaultUser.email;
+
+            const res = await request.get("/api/profile").send({email});
+            expect(res.status).toBe(200);
             expect(res.body.email).toBe(email)
         });
     });
