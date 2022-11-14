@@ -12,34 +12,43 @@ const userSchema = new mongoose.Schema({
             trim: true,
             text: true,
             lowercase: true,
-
+            minlength:3,
+            maxLength: 15,
         },
         first_name: {
             type: String,
             required: [true, 'first name is required'],
             trim: true,
             text: true,
-
+            minlength:3,
+            maxLength: 30,
         },
         last_name: {
             type: String,
             required: [true, 'last  name is required'],
             trim: true,
             text: true,
-
+            minlength:3,
+            maxLength: 50,
         },
         email: {
             type: String,
             required: [true, 'email name is required'],
             trim: true,
             text: true,
-            validate:[validateEmail,'email is incorrect']
+            validate: [validateEmail, 'email is incorrect'],
+            minlength:3,
+            maxLength: 40,
         },
         password: {
             type: String,
             required: [true, 'password is required'],
-            validate:[validatePassword,'password contains at least eight characters, including at least one number and includes both lower and uppercase letters and special characters']
+            validate: [validatePassword, 'password contains at least eight characters, including at least one number' +
+            ' and includes both lower and uppercase letters and special characters'],
+            minlength:3,
+            maxLength: 20,
         },
+
         isAdmin: {
             type: Boolean,
             default: false

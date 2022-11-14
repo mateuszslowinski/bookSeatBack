@@ -36,7 +36,7 @@ describe('insert', () => {
         expect(insertedUser.username).toBe('janek');
     });
 
-    it('check is validation of email ', async () => {
+    it('check validation of email ', async () => {
         const user = await new User(defaultUser)
         await user.save();
 
