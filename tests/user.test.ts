@@ -89,12 +89,21 @@ describe('user.ts', () => {
     });
 
     describe("GET /api/profile", () => {
-        it(" login route", async () => {
+        it("get user profile", async () => {
             const email = defaultUser.email;
 
             const res = await request.get("/api/profile").send({email});
             expect(res.status).toBe(200);
             expect(res.body.email).toBe(email)
+        });
+    });
+    describe("GET /api/profile", () => {
+        it("checking get profile for invalid email", async () => {
+            const email = 'bad@gmail.pl';
+
+            const res = await request.get("/api/profile").send({email});
+            expect(res.status).toBe(404);
+            expect(res.body.email).not.toBe(email)
         });
     });
 });
