@@ -1,11 +1,14 @@
 import mongoose from "mongoose";
+import supertest from 'supertest'
 import {database} from "../config/mongoDb";
 import {User} from "../models/User";
+import {app} from "../index";
 import {NewUserType} from "../types";
 
+const request = supertest(app)
 jest.setTimeout(9000)
 
-describe('insert', () => {
+describe('user.ts', () => {
 
     let defaultUser: NewUserType;
 
@@ -15,8 +18,8 @@ describe('insert', () => {
             username: "Janek",
             first_name: "janek",
             last_name: "nowak",
-            email: "test@gmail.com",
-            password: "Haslo12345asd!",
+            email: "test@gmail2.com",
+            password: "Haslo123@",
             favorite_places: [],
             isAdmin: false,
         }
@@ -28,21 +31,27 @@ describe('insert', () => {
         await mongoose.connection.close();
     });
 
-    it('should insert user into collection', async () => {
-        const user = await new User(defaultUser)
-        await user.save();
+    // describe("POST /register", () => {
+    //     it("checking when email is taken", async () => {
+    //         const res = await request.post("/register").send(defaultUser);
+    //         expect(res.body.message).toBe('Email is already taken')
+    //         expect(res.status).toBe(400);
+    //     });
+    // });
 
-        const insertedUser = await User.findOne({username: 'janek'});
-        expect(insertedUser.username).toBe('janek');
+    // describe("POST /register", () => {
+    //     it("checking when password is incorrect", async () => {
+    //         const res = await request.post("/register").send(defaultUser);
+    //         expect(res.body.message).toBe('password contains at least eight characters, including at least one number' +
+    //             ' and includes both lower and uppercase letters and special characters')
+    //         expect(res.status).toBe(400);
+    //     });
+    // });
+
+    describe("POST /register", () => {
+        it("Check route is create user into database", async () => {
+            const res = await request.post("/register").send(defaultUser);
+            expect(res.status).toBe(201);
+        });
     });
-
-    it('check validation of email ', async () => {
-        const user = await new User(defaultUser)
-        await user.save();
-
-        const insertedUser = await User.findOne({username: 'janek'});
-        expect(insertedUser.email).toContain('@');
-    });
-
-
 });
