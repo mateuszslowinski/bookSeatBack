@@ -1,5 +1,5 @@
 import {Request, Response} from "express";
-import {ValidationError} from "../utils/error";
+import {NotFoundError, ValidationError} from "../utils/error";
 import bcrypt from 'bcrypt';
 import {User} from "../models/User";
 import {validatePassword} from "../utils/validation";
@@ -32,7 +32,7 @@ export const userRegister = async (req: Request, res: Response) => {
             last_name,
         }).save();
 
-        res.status(201).json({
+        return res.status(201).json({
             id: user._id,
             username: user.username,
             email: user.email,
@@ -53,7 +53,7 @@ export const userLogin = async (req: Request, res: Response) => {
     const user = await User.findOne({email})
 
     if (!user) {
-        throw new ValidationError("This email don't exits")
+        throw new NotFoundError("This email don't exits")
     }
 
     const isPasswordCorrect = await bcrypt.compare(password, user.password)
@@ -61,7 +61,7 @@ export const userLogin = async (req: Request, res: Response) => {
         throw new ValidationError("Password is incorrect")
     }
     try {
-        res.status(201).send({
+        return res.status(201).send({
             id: user._id,
             username: user.username,
             email: user.email,
@@ -73,5 +73,25 @@ export const userLogin = async (req: Request, res: Response) => {
         })
     } catch (e) {
         throw new ValidationError(e.message);
+    }
+}
+
+export const getUserProfile = async (req: Request, res: Response) => {
+    const {email} = req.body
+    const user = await User.findOne({email});
+    if (!user) {
+        throw new NotFoundError('User not found')
+    }
+    try {
+        return res.status(200).json({
+            username: user.username,
+            email: user.email,
+            favorite_places: user.favorite_places,
+            first_name: user.first_name,
+            last_name: user.last_name,
+        })
+    } catch (e) {
+        throw new ValidationError(e.message);
+
     }
 }
