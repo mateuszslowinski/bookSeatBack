@@ -61,7 +61,16 @@ export const userLogin = async (req: Request, res: Response) => {
         throw new ValidationError("Password is incorrect")
     }
     try {
-        res.status(201).send(user)
+        res.status(201).send({
+            id: user._id,
+            username: user.username,
+            email: user.email,
+            isAdmin: user.isAdmin,
+            favorite_places: user.favorite_places,
+            first_name: user.first_name,
+            last_name: user.last_name,
+            token: generateToken({id: user._id}, '14d'),
+        })
     } catch (e) {
         throw new ValidationError(e.message);
     }
