@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import {Document} from "mongodb";
 import {UserType} from "../types";
-import {validateEmail, validatePassword} from "../utils/validation";
+import {validateEmail} from "../utils/validation";
 
 interface UserModal extends UserType, Document {}
 
@@ -43,10 +43,8 @@ const userSchema = new mongoose.Schema({
         password: {
             type: String,
             required: [true, 'password is required'],
-            validate: [validatePassword, 'password contains at least eight characters, including at least one number' +
-            ' and includes both lower and uppercase letters and special characters'],
-            minlength:3,
-            maxLength: 20,
+            minlength:8,
+            maxLength: 64,
         },
 
         isAdmin: {
