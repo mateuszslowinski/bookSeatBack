@@ -1,4 +1,4 @@
-export type UserType = {
+export type NewUserType = {
     username: string;
     first_name: string,
     last_name: string,
@@ -6,6 +6,9 @@ export type UserType = {
     password: string,
     isAdmin: boolean,
     favorite_places: string[],
+}
+
+export interface UserType extends NewUserType {
     createdAt: Date,
     updateAt: Date,
 }
