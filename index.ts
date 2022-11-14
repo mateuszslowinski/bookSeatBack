@@ -4,19 +4,18 @@ import * as dotenv from 'dotenv';
 import cors from "cors";
 import {handleError} from "./utils/error";
 import { database } from "./config/mongoDb";
+import { userRoute } from "./routes/user.route";
 
 dotenv.config();
-const app = express();
+export const app = express();
 
 app.use(cors({
     origin: process.env.CORS_ORIGIN
 }))
 app.use(express.json());
 
-app.get('/', (req, res) => {
-    res.send('hello world')
-})
 
+app.use('/',userRoute)
 app.use(handleError);
 
 database();

@@ -7,7 +7,7 @@ export class NotFoundError extends Error {
 }
 
 export const handleError = (err: Error, req: Request, res: Response, next: NextFunction) => {
-    console.error(err);
+    console.log(err);
     res
         .status(err instanceof ValidationError ? 400 : 500 || err instanceof NotFoundError ? 404 : 500)
         .json({
