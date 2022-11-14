@@ -34,6 +34,23 @@ export const userRegister = async (req: Request, res: Response) => {
     } catch (e) {
         throw new ValidationError(e.message);
     }
+}
 
+export const userLogin = async (req: Request, res: Response) => {
+    const { email, password } = req.body
+    const user = await User.findOne({email})
 
+    if (!user) {
+        throw new ValidationError("This email don't exits")
+    }
+
+    const isPasswordCorrect = await bcrypt.compare(password, user.password)
+    if (!isPasswordCorrect) {
+        throw new ValidationError("Password is not correct")
+    }
+    try {
+        res.status(201).send(user)
+    } catch (e) {
+        throw new ValidationError(e.message);
+    }
 }
