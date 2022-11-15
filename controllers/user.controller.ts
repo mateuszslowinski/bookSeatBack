@@ -12,7 +12,7 @@ export const userRegister = async (req: Request, res: Response) => {
     if (checkEmail) {
         throw new ValidationError('Email is already taken');
     }
-    const isCorrectPassword = validatePassword(password)
+    const isCorrectPassword = validatePassword(password);
     if (!isCorrectPassword) {
         throw new ValidationError('password contains at least eight characters, including at least one number' +
             ' and includes both lower and uppercase letters and special characters')
@@ -20,7 +20,7 @@ export const userRegister = async (req: Request, res: Response) => {
 
     try {
         const salt = await bcrypt.genSalt(10);
-        const encryptedPassword = await bcrypt.hash(password, salt)
+        const encryptedPassword = await bcrypt.hash(password, salt);
 
         const user = await new User({
             username,
@@ -53,17 +53,17 @@ export const userLogin = async (req: Request, res: Response) => {
 
     const isEmail = validateEmail(email);
     if (!isEmail) {
-        throw new ValidationError('Incorrect email')
+        throw new ValidationError('Incorrect email');
     }
 
-    const user = await User.findOne({email})
+    const user = await User.findOne({email});
     if (!user) {
-        throw new NotFoundError("This email don't exits")
+        throw new NotFoundError("This email don't exits in database")
     }
 
-    const isPasswordCorrect = await bcrypt.compare(password, user.password)
+    const isPasswordCorrect = await bcrypt.compare(password, user.password);
     if (!isPasswordCorrect) {
-        throw new ValidationError("Password is incorrect")
+        throw new ValidationError("Password is incorrect");
     }
     try {
         return res.status(201).send({
@@ -86,12 +86,12 @@ export const getUserProfile = async (req: Request, res: Response) => {
 
     const isEmail = validateEmail(email);
     if (!isEmail) {
-        throw new ValidationError('Incorrect email')
+        throw new ValidationError('Incorrect email');
     }
 
     const user = await User.findOne({email});
     if (!user) {
-        throw new NotFoundError('User not found')
+        throw new NotFoundError('User not found');
     }
     try {
         return res.status(200).json({
@@ -112,7 +112,7 @@ export const updateDetails = async (req: Request, res: Response) => {
 
     const isEmail = validateEmail(email);
     if (!isEmail) {
-        throw new ValidationError('Incorrect email')
+        throw new ValidationError('Incorrect email');
     }
     validateLengthOfString(username, 3, 15, 'The user name must be a string of characters, cannot be empty and have a minimum of 3 and a maximum of 15 characters.')
     validateLengthOfString(first_name, 3, 30, 'The first name must be a string of characters, cannot be empty and have a' +
@@ -139,8 +139,18 @@ export const updateDetails = async (req: Request, res: Response) => {
     }
 }
 
-export const removeUser = async (req: Request, res: Response) => {
+export const removeProfile = async (req: Request, res: Response) => {
     const {email} = req.body;
+
+    const isEmail = validateEmail(email);
+    if (!isEmail) {
+        throw new ValidationError('Incorrect email');
+    }
+
+    const user = await User.findOne({email});
+    if (!user) {
+        throw new NotFoundError('User not found');
+    }
 
     try {
         await User.findOneAndRemove({email})
