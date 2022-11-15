@@ -8,12 +8,25 @@ export type RestaurantType = {
         building_number: string,
         zip_code: string,
         city: string,
-    }
-    image: string,
+    },
+    description: string;
+    typeOfRestaurant: TypeOfRestaurant,
+    rating: number,
+    numberOfRating: number,
+    lat: number,
+    lon: number,
 }
 
 export interface CreatedRestaurantType extends RestaurantType {
     _id: ObjectId
     createdAt: Date,
     updateAt: Date,
+}
+
+export enum TypeOfRestaurant {
+    indianCuisine,
+    italianCuisine,
+    polishCuisine,
+    chineseCuisine,
+    americanCuisine
 }
