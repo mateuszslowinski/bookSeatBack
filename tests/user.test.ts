@@ -3,14 +3,14 @@ import supertest from 'supertest'
 import {database} from "../config/mongoDb";
 import {User} from "../models/User";
 import {app} from "../index";
-import {NewUserType} from "../types";
+import {UserType} from "../types";
 
 const request = supertest(app)
 jest.setTimeout(9000)
 
 describe('user.ts', () => {
 
-    let defaultUser: NewUserType;
+    let defaultUser: UserType;
 
     beforeAll(async () => {
         database();
@@ -161,5 +161,14 @@ describe('user.ts', () => {
         });
     });
 
+    describe("PATCH /api/profile", () => {
+        it("checking for validation of email", async () => {
+            const email = 'test.com';
+
+            const res = await request.patch("/api/profile").send({email,});
+            expect(res.status).toBe(400);
+            expect(res.body.message).toBe('Incorrect email')
+        });
+    });
 
 })
