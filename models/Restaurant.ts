@@ -21,7 +21,8 @@ const restaurantSchema = new mongoose.Schema({
             required: true,
         },
         typeOfRestaurant: {
-            type: TypeOfRestaurant,
+            type:String,
+            enum: TypeOfRestaurant,
             required: true,
         },
         description: {
