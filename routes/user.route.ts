@@ -9,4 +9,4 @@ userRoute
     .post('/login', userLogin)
     .get('/profile', protect, getUserProfile)
     .patch('/profile', protect, updateProfile)
-    .delete('/profile', removeProfile)
+    .delete('/profile',protect, removeProfile)
