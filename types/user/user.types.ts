@@ -6,6 +6,7 @@ export type UserType = {
     first_name: string,
     last_name: string,
     email: string,
+    token?: string,
     password: string,
     isAdmin: boolean,
     favorite_places: CreatedRestaurantType[],
