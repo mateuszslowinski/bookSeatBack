@@ -1,8 +1,9 @@
 import mongoose from "mongoose";
 import {Document} from "mongodb";
-import {RestaurantType} from "../types";
+import {RestaurantType, TypeOfRestaurant} from "../types";
 
-interface RestaurantModal extends RestaurantType, Document {}
+interface RestaurantModal extends RestaurantType, Document {
+}
 
 const restaurantSchema = new mongoose.Schema({
         name: {
@@ -20,10 +21,29 @@ const restaurantSchema = new mongoose.Schema({
             type: Number,
             required: true,
         },
-        image: {
-            type: String,
+        typeOfRestaurant: {
+            type: TypeOfRestaurant,
             required: true,
+        },
+        description: {
+            type: String,
             trim: true,
+        },
+        rating: {
+            type: Number,
+            default: 0
+        },
+        numberOfRating: {
+            type: Number,
+            default: 0
+        },
+        lat: {
+            type: Number,
+            default: 0
+        },
+        lon: {
+            type: Number,
+            default: 0
         },
     },
     {timestamps: true}
