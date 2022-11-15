@@ -20,6 +20,7 @@ describe('user.ts', () => {
             last_name: "nowak",
             email: "test@gmail2.com",
             password: "Haslo123@",
+            token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzNzNhNjg5NGI2YjNmYWI4MWZlYzg1YiIsImlhdCI6MTY2ODUyMzY1NywiZXhwIjoxNjY5NzMzMjU3fQ.iAE_OMblKgmAda10Z4nyIiQzXChqgxljNDetbiadJTM",
             favorite_places: [],
             isAdmin: false,
         }
@@ -102,7 +103,7 @@ describe('user.ts', () => {
         it("get user profile", async () => {
             const email = defaultUser.email;
 
-            const res = await request.get("/api/profile").send({email});
+            const res = await request.get("/api/profile").set('Authorization', `Bearer ${defaultUser.token}`).send({email});
             expect(res.status).toBe(200);
             expect(res.body.email).toBe(email)
         });
@@ -111,9 +112,20 @@ describe('user.ts', () => {
         it("checking get profile for invalid email", async () => {
             const email = 'ola@o2.pl';
 
-            const res = await request.get("/api/profile").send({email});
+            const res = await request.get("/api/profile").set('Authorization', `Bearer ${defaultUser.token}`).send({email});
             expect(res.status).toBe(404);
             expect(res.body.email).not.toBe(email)
+        });
+    });
+
+    describe("GET /api/profile", () => {
+        it("checking to getting profile with incorrect token", async () => {
+            const email = defaultUser.email;
+            const token = 'invalid';
+
+            const res = await request.get("/api/profile").set('Authorization', `Bearer ${token}`).send({email});
+            expect(res.status).toBe(400);
+            expect(res.body.message).toBe("Invalid Authentication")
         });
     });
 
