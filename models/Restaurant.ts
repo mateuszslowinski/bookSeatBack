@@ -29,4 +29,4 @@ const restaurantSchema = new mongoose.Schema({
     {timestamps: true}
 )
 
-export const RestaurantSchema = mongoose.model<RestaurantModal>('Restaurant', restaurantSchema)
+export const Restaurant = mongoose.model<RestaurantModal>('Restaurant', restaurantSchema)
