@@ -1,3 +1,5 @@
+import {ObjectId} from "mongodb";
+
 export type RestaurantType = {
     name: string,
     available_seats: number,
@@ -8,6 +10,10 @@ export type RestaurantType = {
         city: string,
     }
     image: string,
+}
+
+export interface CreatedRestaurantType extends RestaurantType {
+    _id: ObjectId
     createdAt: Date,
     updateAt: Date,
 }
