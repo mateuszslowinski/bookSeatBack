@@ -107,7 +107,7 @@ export const getUserProfile = async (req: Request, res: Response) => {
     }
 }
 
-export const updateDetails = async (req: Request, res: Response) => {
+export const updateProfile = async (req: Request, res: Response) => {
     const {email, username, first_name, last_name} = req.body;
 
     const isEmail = validateEmail(email);
