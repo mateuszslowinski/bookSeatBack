@@ -136,7 +136,7 @@ describe('user.ts', () => {
             const last_name = defaultUser.last_name;
             const username = defaultUser.username;
 
-            const res = await request.patch("/api/profile").send({email, first_name, last_name, username});
+            const res = await request.patch("/api/profile").set('Authorization', `Bearer ${defaultUser.token}`).send({email, first_name, last_name, username});
             expect(res.status).toBe(400);
             expect(res.body.message).toBe('The first name must be a string of characters, cannot be empty and have a' +
                 ' minimum of 3 and a maximum of 30 characters.')
@@ -149,7 +149,7 @@ describe('user.ts', () => {
             const last_name = '';
             const username = defaultUser.username;
 
-            const res = await request.patch("/api/profile").send({email, first_name, last_name, username});
+            const res = await request.patch("/api/profile").set('Authorization', `Bearer ${defaultUser.token}`).send({email, first_name, last_name, username});
             expect(res.status).toBe(400);
             expect(res.body.message).toBe('The last name must be a string of characters, cannot be empty and have' +
                 ' a minimum of 3 and a maximum of 50 characters.')
@@ -162,7 +162,7 @@ describe('user.ts', () => {
             const last_name = defaultUser.last_name;
             const username = 'A';
 
-            const res = await request.patch("/api/profile").send({email, first_name, last_name, username});
+            const res = await request.patch("/api/profile").set('Authorization', `Bearer ${defaultUser.token}`).send({email, first_name, last_name, username});
             expect(res.status).toBe(400);
             expect(res.body.message).toBe('The user name must be a string of characters, cannot be empty and have a minimum of 3 and a maximum of 15 characters.')
         });
@@ -174,7 +174,7 @@ describe('user.ts', () => {
                 const last_name = 'zmiana';
                 const username = 'zmiana';
 
-                const res = await request.patch("/api/profile").send({email, first_name, last_name, username});
+                const res = await request.patch("/api/profile").set('Authorization', `Bearer ${defaultUser.token}`).send({email, first_name, last_name, username});
                 expect(res.status).toBe(200);
                 expect(res.body.username).toBe(username)
                 expect(res.body.first_name).toBe(first_name)
@@ -187,7 +187,7 @@ describe('user.ts', () => {
         it("checking for validation of email", async () => {
             const email = 'test.com';
 
-            const res = await request.patch("/api/profile").send({email,});
+            const res = await request.patch("/api/profile").set('Authorization', `Bearer ${defaultUser.token}`).send({email,});
             expect(res.status).toBe(400);
             expect(res.body.message).toBe('Incorrect email')
         });
