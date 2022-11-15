@@ -1,3 +1,5 @@
+import {ValidationError} from "./error";
+
 export const validateEmail = (email: string) => {
     return String(email)
         .toLowerCase()
@@ -8,4 +10,10 @@ export const validateEmail = (email: string) => {
 
 export const validatePassword = (password: string) => {
     return (password).match(/^(?=[^A-Z\n]*[A-Z])(?=[^a-z\n]*[a-z])(?=[^0-9\n]*[0-9])(?=[^#?!@$%^&*\n-]*[#?!@$%^&*-]).{8,}$/)
+}
+
+export const validateLengthOfString = (value: string, min: number, max: number, descOfError: string) => {
+    if (!value || typeof value !== "string" || value.length < min || value.length > max) {
+        throw new ValidationError(descOfError)
+    }
 }

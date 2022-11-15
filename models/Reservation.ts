@@ -26,4 +26,4 @@ const reservationSchema = new mongoose.Schema({
     {timestamps: true}
 )
 
-export const ReservationSchema = mongoose.model<ReservationModal>('Reservation', reservationSchema)
+export const Reservation = mongoose.model<ReservationModal>('Reservation', reservationSchema)
