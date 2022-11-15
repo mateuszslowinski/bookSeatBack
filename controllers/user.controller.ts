@@ -49,9 +49,14 @@ export const userRegister = async (req: Request, res: Response) => {
 }
 
 export const userLogin = async (req: Request, res: Response) => {
-    const {email, password} = req.body
-    const user = await User.findOne({email})
+    const {email, password} = req.body;
 
+    const isEmail = validateEmail(email);
+    if (!isEmail) {
+        throw new ValidationError('Incorrect email')
+    }
+
+    const user = await User.findOne({email})
     if (!user) {
         throw new NotFoundError("This email don't exits")
     }
@@ -77,7 +82,13 @@ export const userLogin = async (req: Request, res: Response) => {
 }
 
 export const getUserProfile = async (req: Request, res: Response) => {
-    const {email} = req.body
+    const {email} = req.body;
+
+    const isEmail = validateEmail(email);
+    if (!isEmail) {
+        throw new ValidationError('Incorrect email')
+    }
+
     const user = await User.findOne({email});
     if (!user) {
         throw new NotFoundError('User not found')
@@ -98,7 +109,8 @@ export const getUserProfile = async (req: Request, res: Response) => {
 
 export const updateDetails = async (req: Request, res: Response) => {
     const {email, username, first_name, last_name} = req.body;
-    const isEmail = validateEmail(email)
+
+    const isEmail = validateEmail(email);
     if (!isEmail) {
         throw new ValidationError('Incorrect email')
     }
