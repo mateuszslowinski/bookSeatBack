@@ -197,7 +197,7 @@ describe('user.ts', () => {
         it("checking for incorrect  email", async () => {
             const email = 'asgamil.com';
 
-            const res = await request.delete("/api/profile").send({email});
+            const res = await request.delete("/api/profile").set('Authorization', `Bearer ${defaultUser.token}`).send({email});
             expect(res.status).toBe(400);
             expect(res.body.message).toBe('Incorrect email')
         });
@@ -207,7 +207,7 @@ describe('user.ts', () => {
         it("Checking remove user from an email that is not in the database", async () => {
             const email = 'asg@amil.com';
 
-            const res = await request.delete("/api/profile").send({email});
+            const res = await request.delete("/api/profile").set('Authorization', `Bearer ${defaultUser.token}`).send({email});
             expect(res.status).toBe(404);
             expect(res.body.message).toBe('User not found')
         });
@@ -216,7 +216,7 @@ describe('user.ts', () => {
         it("Checking if a user has been successfully removed", async () => {
             const email = defaultUser.email;
 
-            const res = await request.delete("/api/profile").send({email});
+            const res = await request.delete("/api/profile").set('Authorization', `Bearer ${defaultUser.token}`).send({email});
             expect(res.status).toBe(201);
             expect(res.body).toBe('The user was removed successfully')
         });
