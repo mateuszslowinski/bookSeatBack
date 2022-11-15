@@ -2,11 +2,11 @@ import {ObjectId} from "mongodb";
 
 export type RestaurantType = {
     name: string,
-    available_seats: number,
+    availableSeats: number,
     address: {
         street: string,
-        building_number: string,
-        zip_code: string,
+        buildingNumber: string,
+        zipCode: string,
         city: string,
     },
     description: string;

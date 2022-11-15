@@ -9,7 +9,7 @@ const reservationSchema = new mongoose.Schema({
             type: Date,
             required: true,
         },
-        count_of_people: {
+        countOfPeople: {
             type: Number,
         },
         restaurant: {

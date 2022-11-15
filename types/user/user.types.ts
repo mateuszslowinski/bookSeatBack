@@ -3,13 +3,13 @@ import {ObjectId} from "mongodb";
 
 export type UserType = {
     username: string;
-    first_name: string,
-    last_name: string,
+    firstName: string,
+    lastName: string,
     email: string,
     token?: string,
     password: string,
     isAdmin: boolean,
-    favorite_places: CreatedRestaurantType[],
+    favoritePlaces: CreatedRestaurantType[],
 }
 
 export interface CreatedUserType extends UserType {

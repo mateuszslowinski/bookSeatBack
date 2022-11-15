@@ -1,12 +1,12 @@
 import {Request, Response} from "express";
-import {NotFoundError, ValidationError} from "../utils/error";
 import bcrypt from 'bcrypt';
-import {User} from "../models/User";
-import {validateEmail, validateLengthOfString, validatePassword} from "../utils/validation";
 import {generateToken} from "../utils/generateToken";
+import {validateEmail, validateLengthOfString, validatePassword} from "../utils/validation";
+import {NotFoundError, ValidationError} from "../utils/error";
+import {User} from "../models/User";
 
 export const userRegister = async (req: Request, res: Response) => {
-    const {username, email, password, first_name, last_name, favorite_places} = req.body;
+    const {username, email, password, firstName, lastName, favoritePlaces} = req.body;
 
     const checkEmail = await User.findOne({email});
     if (checkEmail) {
@@ -27,9 +27,9 @@ export const userRegister = async (req: Request, res: Response) => {
             email,
             password: encryptedPassword,
             isAdmin: email === process.env.ADMIN_EMAIL,
-            favorite_places,
-            first_name,
-            last_name,
+            favoritePlaces,
+            firstName,
+            lastName,
         }).save();
 
         return res.status(201).json({
@@ -37,9 +37,9 @@ export const userRegister = async (req: Request, res: Response) => {
             username: user.username,
             email: user.email,
             isAdmin: user.isAdmin,
-            favorite_places: user.favorite_places,
-            first_name: user.first_name,
-            last_name: user.last_name,
+            favoritePlaces: user.favoritePlaces,
+            firstName: user.firstName,
+            lastName: user.lastName,
             token: generateToken({id: user._id}, '14d'),
 
         })
@@ -71,9 +71,9 @@ export const userLogin = async (req: Request, res: Response) => {
             username: user.username,
             email: user.email,
             isAdmin: user.isAdmin,
-            favorite_places: user.favorite_places,
-            first_name: user.first_name,
-            last_name: user.last_name,
+            favoritePlaces: user.favoritePlaces,
+            firstName: user.firstName,
+            lastName: user.lastName,
             token: generateToken({id: user._id}, '14d'),
         })
     } catch (e) {
@@ -98,8 +98,8 @@ export const getUserProfile = async (req: Request, res: Response) => {
             username: user.username,
             email: user.email,
             favorite_places: user.favorite_places,
-            first_name: user.first_name,
-            last_name: user.last_name,
+            firstName: user.firstName,
+            lastName: user.lastName,
         })
     } catch (e) {
         throw new ValidationError(e.message);
@@ -108,30 +108,31 @@ export const getUserProfile = async (req: Request, res: Response) => {
 }
 
 export const updateProfile = async (req: Request, res: Response) => {
-    const {email, username, first_name, last_name} = req.body;
+    const {email, username, firstName, lastName} = req.body;
 
     const isEmail = validateEmail(email);
     if (!isEmail) {
         throw new ValidationError('Incorrect email');
     }
     validateLengthOfString(username, 3, 15, 'The user name must be a string of characters, cannot be empty and have a minimum of 3 and a maximum of 15 characters.')
-    validateLengthOfString(first_name, 3, 30, 'The first name must be a string of characters, cannot be empty and have a' +
+    validateLengthOfString(firstName, 3, 30, 'The first name must be a string of characters, cannot be empty and' +
+        ' have a' +
         ' minimum of 3 and a maximum of 30 characters.')
-    validateLengthOfString(last_name, 3, 50, 'The last name must be a string of characters, cannot be empty and have' +
+    validateLengthOfString(lastName, 3, 50, 'The last name must be a string of characters, cannot be empty and have' +
         ' a minimum of 3 and a maximum of 50 characters.')
 
     try {
         await User.findOneAndUpdate({email}, {
             username,
-            first_name,
-            last_name
+            firstName,
+            lastName
         });
         const updateUser = await User.findOne({email});
 
         return res.status(200).json({
             username: updateUser.username,
-            first_name: updateUser.first_name,
-            last_name: updateUser.last_name,
+            firstName: updateUser.firstName,
+            lastName: updateUser.lastName,
         })
 
     } catch (e) {
