@@ -60,7 +60,7 @@ describe('user.ts', () => {
             const email = 'test';
             const password = defaultUser.password;
 
-            const res = await request.post("/api/login").send({email,password});
+            const res = await request.post("/api/login").send({email, password});
             expect(res.status).toBe(404);
             expect(res.body.message).toBe("This email don't exits")
         });
@@ -71,7 +71,7 @@ describe('user.ts', () => {
             const email = defaultUser.email;
             const password = '123';
 
-            const res = await request.post("/api/login").send({email,password});
+            const res = await request.post("/api/login").send({email, password});
             expect(res.status).toBe(400);
             expect(res.body.message).toBe("Password is incorrect")
         });
@@ -82,7 +82,7 @@ describe('user.ts', () => {
             const email = defaultUser.email;
             const password = defaultUser.password;
 
-            const res = await request.post("/api/login").send({email,password});
+            const res = await request.post("/api/login").send({email, password});
             expect(res.status).toBe(201);
             expect(res.body.email).toBe(email)
         });
@@ -106,4 +106,60 @@ describe('user.ts', () => {
             expect(res.body.email).not.toBe(email)
         });
     });
-});
+
+    describe("PATCH /api/profile", () => {
+        it("checking validation of first name ", async () => {
+            const email = defaultUser.email;
+            const first_name = 'te';
+            const last_name = defaultUser.last_name;
+            const username = defaultUser.username;
+
+            const res = await request.patch("/api/profile").send({email, first_name, last_name, username});
+            expect(res.status).toBe(400);
+            expect(res.body.message).toBe('The first name must be a string of characters, cannot be empty and have a' +
+                ' minimum of 3 and a maximum of 30 characters.')
+        });
+    });
+    describe("PATCH /api/profile", () => {
+        it("checking validation of last name ", async () => {
+            const email = defaultUser.email;
+            const first_name = defaultUser.first_name;
+            const last_name = '';
+            const username = defaultUser.username;
+
+            const res = await request.patch("/api/profile").send({email, first_name, last_name, username});
+            expect(res.status).toBe(400);
+            expect(res.body.message).toBe('The last name must be a string of characters, cannot be empty and have' +
+                ' a minimum of 3 and a maximum of 50 characters.')
+        });
+    });
+    describe("PATCH /api/profile", () => {
+        it("checking validation of user name ", async () => {
+            const email = defaultUser.email;
+            const first_name = defaultUser.first_name;
+            const last_name = defaultUser.last_name;
+            const username = 'A';
+
+            const res = await request.patch("/api/profile").send({email, first_name, last_name, username});
+            expect(res.status).toBe(400);
+            expect(res.body.message).toBe('The user name must be a string of characters, cannot be empty and have a minimum of 3 and a maximum of 15 characters.')
+        });
+
+        describe("PATCH /api/profile", () => {
+            it("checking for update route", async () => {
+                const email = defaultUser.email;
+                const first_name = 'zmiana';
+                const last_name = 'zmiana';
+                const username = 'zmiana';
+
+                const res = await request.patch("/api/profile").send({email, first_name, last_name, username});
+                expect(res.status).toBe(200);
+                expect(res.body.username).toBe(username)
+                expect(res.body.first_name).toBe(first_name)
+                expect(res.body.last_name).toBe(last_name)
+            });
+        });
+    });
+
+
+})
