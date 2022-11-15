@@ -2,7 +2,7 @@ import {Request, Response} from "express";
 import {NotFoundError, ValidationError} from "../utils/error";
 import bcrypt from 'bcrypt';
 import {User} from "../models/User";
-import {validateLengthOfString, validatePassword} from "../utils/validation";
+import {validateEmail, validateLengthOfString, validatePassword} from "../utils/validation";
 import {generateToken} from "../utils/generateToken";
 
 export const userRegister = async (req: Request, res: Response) => {
@@ -98,7 +98,10 @@ export const getUserProfile = async (req: Request, res: Response) => {
 
 export const updateDetails = async (req: Request, res: Response) => {
     const {email, username, first_name, last_name} = req.body;
-
+    const isEmail = validateEmail(email)
+    if (!isEmail) {
+        throw new ValidationError('Incorrect email')
+    }
     validateLengthOfString(username, 3, 15, 'The user name must be a string of characters, cannot be empty and have a minimum of 3 and a maximum of 15 characters.')
     validateLengthOfString(first_name, 3, 30, 'The first name must be a string of characters, cannot be empty and have a' +
         ' minimum of 3 and a maximum of 30 characters.')
@@ -122,4 +125,17 @@ export const updateDetails = async (req: Request, res: Response) => {
     } catch (e) {
         throw new ValidationError(e.message);
     }
+}
+
+export const removeUser = async (req: Request, res: Response) => {
+    const {email} = req.body;
+
+    try {
+        await User.findOneAndRemove({email})
+        res.status(201).json('The user was removed successfully')
+
+    } catch (e) {
+        throw new ValidationError(e.message);
+    }
+
 }
