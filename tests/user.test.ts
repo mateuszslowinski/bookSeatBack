@@ -61,11 +61,21 @@ describe('user.ts', () => {
             const password = defaultUser.password;
 
             const res = await request.post("/api/login").send({email, password});
-            expect(res.status).toBe(404);
-            expect(res.body.message).toBe("This email don't exits")
+            expect(res.status).toBe(400);
+            expect(res.body.message).toBe("Incorrect email")
         });
     });
 
+    describe("POST /api/login", () => {
+        it("Checking the login from an email that is not in the database", async () => {
+            const email = 'niema@o2.pl';
+            const password = defaultUser.password;
+
+            const res = await request.post("/api/login").send({email, password});
+            expect(res.status).toBe(404);
+            expect(res.body.message).toBe("This email don't exits in database")
+        });
+    });
     describe("POST /api/login", () => {
         it("Checking login for incorrect password", async () => {
             const email = defaultUser.email;
@@ -99,7 +109,7 @@ describe('user.ts', () => {
     });
     describe("GET /api/profile", () => {
         it("checking get profile for invalid email", async () => {
-            const email = 'bad@gmail.pl';
+            const email = 'ola@o2.pl';
 
             const res = await request.get("/api/profile").send({email});
             expect(res.status).toBe(404);
@@ -171,4 +181,32 @@ describe('user.ts', () => {
         });
     });
 
+    describe("DELETE /api/profile", () => {
+        it("checking for incorrect  email", async () => {
+            const email = 'asgamil.com';
+
+            const res = await request.delete("/api/profile").send({email});
+            expect(res.status).toBe(400);
+            expect(res.body.message).toBe('Incorrect email')
+        });
+    });
+
+    describe("DELETE /api/profile", () => {
+        it("Checking remove user from an email that is not in the database", async () => {
+            const email = 'asg@amil.com';
+
+            const res = await request.delete("/api/profile").send({email});
+            expect(res.status).toBe(404);
+            expect(res.body.message).toBe('User not found')
+        });
+    });
+    describe("DELETE /api/profile", () => {
+        it("Checking if a user has been successfully removed", async () => {
+            const email = defaultUser.email;
+
+            const res = await request.delete("/api/profile").send({email});
+            expect(res.status).toBe(201);
+            expect(res.body).toBe('The user was removed successfully')
+        });
+    });
 })
