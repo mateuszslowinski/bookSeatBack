@@ -1,11 +1,12 @@
 import express from "express"
-import {getUserProfile, removeProfile, updateDetails, userLogin, userRegister} from "../controllers/user.controller";
+import {getUserProfile, removeProfile, updateProfile, userLogin, userRegister} from "../controllers/user.controller";
+import {protect} from "../middleware/auth.middleware";
 
 export const userRoute = express.Router()
 
 userRoute
     .post('/register', userRegister)
     .post('/login', userLogin)
-    .get('/profile', getUserProfile)
-    .patch('/profile', updateDetails)
-    .delete('/profile', removeProfile)
+    .get('/profile', protect, getUserProfile)
+    .patch('/profile', protect, updateProfile)
+    .delete('/profile',protect, removeProfile)
