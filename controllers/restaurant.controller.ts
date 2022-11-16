@@ -44,7 +44,7 @@ export const createRestaurant = async (req: Request, res: Response) => {
     }
 }
 
-export const getRestaurants = async (req: Request, res: Response) => {
+export const getListOfRestaurants = async (req: Request, res: Response) => {
     const restaurants = await Restaurant.find()
 
     if (restaurants.length === 0) {
@@ -57,3 +57,4 @@ export const getRestaurants = async (req: Request, res: Response) => {
         throw new ValidationError(e.message)
     }
 }
+
