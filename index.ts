@@ -3,8 +3,8 @@ import 'express-async-errors';
 import * as dotenv from 'dotenv';
 import cors from "cors";
 import {handleError} from "./utils/error";
-import { database } from "./config/mongoDb";
-import { userRoute } from "./routes/user.route";
+import {database} from "./config/mongoDb";
+import {userRoute} from "./routes/user.route";
 
 dotenv.config();
 export const app = express();
@@ -15,14 +15,16 @@ app.use(cors({
 app.use(express.json());
 
 
-app.use('/api',userRoute)
+app.use('/api', userRoute);
+
 app.use(handleError);
 
-database();
 const PORT = Number(process.env.PORT);
 
-app.listen(PORT, '0.0.0.0', () => {
+app.listen(PORT, '0.0.0.0',async () => {
     console.log(`Listing on http://localhost:${PORT}`)
+
+    await database();
 })
 
 
