@@ -19,7 +19,7 @@ export const validateLengthOfString = (value: string, min: number, max: number, 
 }
 
 export const validateNumber = (value: number, descOfError: string) => {
-    if (typeof value !== "number" || value < 0) {
+    if (typeof value !== "number" || value <= 0) {
         throw new ValidationError(descOfError)
     }
 }
