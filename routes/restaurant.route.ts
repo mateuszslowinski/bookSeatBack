@@ -1,7 +1,10 @@
 import express from "express"
-import {createRestaurant} from "../controllers/restaurant.controller";
+import {createRestaurant,getRestaurants} from "../controllers/restaurant.controller";
 
 
 export const restaurantRouter = express.Router()
 
-restaurantRouter.post('/',createRestaurant)
+restaurantRouter
+    .get('/', getRestaurants)
+    .post('/', createRestaurant)
+
