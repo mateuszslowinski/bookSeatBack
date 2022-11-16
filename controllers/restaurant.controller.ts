@@ -1,6 +1,6 @@
 import {Request, Response} from "express";
 import {Restaurant} from "../models/Restaurant";
-import {ValidationError} from "../utils/error";
+import {NotFoundError, ValidationError} from "../utils/error";
 import {validateLengthOfString, validateNumber} from "../utils/validation";
 import {TypeOfRestaurant} from "../types";
 
@@ -19,11 +19,11 @@ export const createRestaurant = async (req: Request, res: Response) => {
         ' cannot be empty and have a minimum of 1 and a maximum of 10 characters.');
     validateLengthOfString(address.city, 1, 50, 'The city address name must be a string of characters,' +
         ' cannot be empty and have a minimum of 1 and a maximum of 50 characters.');
-    validateNumber(availableSeats,'Available spaces must be a number and be greater than 0');
-    validateNumber(lat,'Latitude must be a number and be greater than 0');
-    validateNumber(lon,'Longitude must be a number and be greater than 0');
+    validateNumber(availableSeats, 'Available spaces must be a number and be greater than 0');
+    validateNumber(lat, 'Latitude must be a number and be greater than 0');
+    validateNumber(lon, 'Longitude must be a number and be greater than 0');
 
-    if(!(typeOfRestaurant in TypeOfRestaurant) || !typeOfRestaurant) {
+    if (!(typeOfRestaurant in TypeOfRestaurant) || !typeOfRestaurant) {
         throw new ValidationError('Type of restaurant cannot be empty and must be one of specify type of restaurant.')
     }
 
@@ -36,11 +36,24 @@ export const createRestaurant = async (req: Request, res: Response) => {
         lat,
         lon
     })
-
+    await restaurant.save();
     try {
         res.status(201).json(restaurant)
     } catch (e) {
         throw new ValidationError(e.message)
     }
+}
 
+export const getRestaurants = async (req: Request, res: Response) => {
+    const restaurants = await Restaurant.find()
+
+    if (restaurants.length === 0) {
+        throw new NotFoundError('No restaurants in database')
+    }
+    try {
+        res.status(200).json(restaurants)
+
+    } catch (e) {
+        throw new ValidationError(e.message)
+    }
 }
