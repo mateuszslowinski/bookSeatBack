@@ -4,7 +4,8 @@ import * as dotenv from 'dotenv';
 import cors from "cors";
 import {handleError} from "./utils/error";
 import {database} from "./config/mongoDb";
-import {userRoute} from "./routes/user.route";
+import {userRouter} from "./routes/user.route";
+import {restaurantRouter} from "./routes/restaurant.route";
 
 dotenv.config();
 export const app = express();
@@ -15,7 +16,8 @@ app.use(cors({
 app.use(express.json());
 
 
-app.use('/api', userRoute);
+app.use('/api', userRouter);
+app.use('/api/restaurant', restaurantRouter);
 
 app.use(handleError);
 

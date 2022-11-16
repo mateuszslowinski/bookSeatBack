@@ -2,6 +2,6 @@ import express from "express"
 import {createRestaurant} from "../controllers/restaurant.controller";
 
 
-export const restaurantRoute = express.Router()
+export const restaurantRouter = express.Router()
 
-restaurantRoute.post('/',createRestaurant)
+restaurantRouter.post('/',createRestaurant)
