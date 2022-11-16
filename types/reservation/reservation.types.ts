@@ -2,7 +2,7 @@ import {ObjectId} from "mongodb";
 
 export type ReservationType = {
     date: Date,
-    count_of_people: number,
+    countOfPeople: number,
     restaurant: string,
     user: string,
 }
