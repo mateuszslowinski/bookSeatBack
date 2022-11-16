@@ -124,7 +124,7 @@ describe('restaurant.test.ts', () => {
         it("checking the validation of putting of negative number in the available seats when creating a new restaurant", async () => {
             const res = await request.post("/api/restaurant").send({
                 ...defaultRestaurant,
-                availableSeats:-2
+                availableSeats: -2
             });
             expect(res.status).toBe(400)
             expect(res.body.message).toBe('Available spaces must be a number and be greater than 0');
@@ -135,7 +135,7 @@ describe('restaurant.test.ts', () => {
         it("checking the validation of putting of string in the available seats when creating a new restaurant", async () => {
             const res = await request.post("/api/restaurant").send({
                 ...defaultRestaurant,
-                availableSeats:"23"
+                availableSeats: "23"
             });
             expect(res.status).toBe(400)
             expect(res.body.message).toBe('Available spaces must be a number and be greater than 0');
@@ -146,7 +146,7 @@ describe('restaurant.test.ts', () => {
         it("checking the validation of putting of string in the latitude when creating a new restaurant", async () => {
             const res = await request.post("/api/restaurant").send({
                 ...defaultRestaurant,
-                lat:"3"
+                lat: "3"
             });
             expect(res.status).toBe(400)
             expect(res.body.message).toBe('Latitude must be a number and be greater than 0');
@@ -157,7 +157,7 @@ describe('restaurant.test.ts', () => {
         it("checking the validation of putting of incorrect number in the latitude when creating a new restaurant", async () => {
             const res = await request.post("/api/restaurant").send({
                 ...defaultRestaurant,
-                lat:0
+                lat: 0
             });
             expect(res.status).toBe(400)
             expect(res.body.message).toBe('Latitude must be a number and be greater than 0');
@@ -168,7 +168,7 @@ describe('restaurant.test.ts', () => {
         it("checking the validation of putting of incorrect number in the longitude when creating a new restaurant", async () => {
             const res = await request.post("/api/restaurant").send({
                 ...defaultRestaurant,
-                lon:-4
+                lon: -4
             });
             expect(res.status).toBe(400)
             expect(res.body.message).toBe('Longitude must be a number and be greater than 0');
@@ -180,7 +180,7 @@ describe('restaurant.test.ts', () => {
             " restaurant", async () => {
             const res = await request.post("/api/restaurant").send({
                 ...defaultRestaurant,
-                typeOfRestaurant:-4
+                typeOfRestaurant: -4
             });
             expect(res.status).toBe(400)
             expect(res.body.message).toBe('Type of restaurant cannot be empty and must be one of specify type of restaurant.');
@@ -191,7 +191,7 @@ describe('restaurant.test.ts', () => {
             " restaurant", async () => {
             const res = await request.post("/api/restaurant").send({
                 ...defaultRestaurant,
-                typeOfRestaurant:'americanCuisine'
+                typeOfRestaurant: 'americanCuisine'
             });
             expect(res.status).toBe(201)
             expect(res.body.typeOfRestaurant).toBe(defaultRestaurant.typeOfRestaurant);
@@ -204,5 +204,22 @@ describe('restaurant.test.ts', () => {
             expect(res.status).toBe(201);
         })
     });
+
+    describe("GET /restaurant", () => {
+        it("checking to successful get a restaurants list", async () => {
+            const res = await request.get("/api/restaurant");
+            expect(res.status).toBe(200);
+            expect(res.body).not.toEqual([])
+            expect(res.body[0]._id).toBeDefined();
+        })
+    });
+
+    // describe("GET /restaurant", () => {
+    //     it("checking to validation of get empty restaurants list", async () => {
+    //         const res = await request.get("/api/restaurant");
+    //         expect(res.status).toBe(404);
+    //         expect(res.body.message).toEqual('No restaurants in database')
+    //     })
+    // });
 
 })
