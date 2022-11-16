@@ -24,9 +24,9 @@ export interface CreatedRestaurantType extends RestaurantType {
 }
 
 export enum TypeOfRestaurant {
-    indianCuisine,
-    italianCuisine,
-    polishCuisine,
-    chineseCuisine,
-    americanCuisine
+    indianCuisine = "indianCuisine",
+    italianCuisine = "italianCuisine",
+    polishCuisine = 'polishCuisine',
+    chineseCuisine = "chineseCuisine",
+    americanCuisine = 'americanCuisine'
 }
