@@ -54,9 +54,17 @@ describe('user.ts', () => {
         it("Checking is route create user into database", async () => {
             const res = await request.post("/api/register").send(defaultUser);
             expect(res.status).toBe(201);
+            expect(res.body.email).toBe(defaultUser.email)
         });
     });
 
+    describe("POST /register", () => {
+        it("Checking validation of email during register", async () => {
+            const res = await request.post("/api/register").send(defaultUser);
+            expect(res.status).toBe(400);
+            expect(res.body.message).toBe('Email is already taken')
+        });
+    });
     describe("POST /api/login", () => {
         it("Checking login for incorrect email", async () => {
             const email = 'test';
