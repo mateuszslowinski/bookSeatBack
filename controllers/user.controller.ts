@@ -1,7 +1,7 @@
 import {Request, Response} from "express";
 import bcrypt from 'bcrypt';
 import {generateToken} from "../utils/generateToken";
-import {validateEmail, validateLengthOfString, validatePassword} from "../utils/validation";
+import {validateEmail, validateForUserData, validatePassword} from "../utils/validation";
 import {NotFoundError, ValidationError} from "../utils/error";
 import {User} from "../models/User";
 
@@ -105,12 +105,7 @@ export const updateProfile = async (req: Request, res: Response) => {
     if (!isEmail) {
         throw new ValidationError('Incorrect email');
     }
-    validateLengthOfString(username, 3, 15, 'The user name must be a string of characters, cannot be empty and have a minimum of 3 and a maximum of 15 characters.')
-    validateLengthOfString(firstName, 3, 30, 'The first name must be a string of characters, cannot be empty and' +
-        ' have a' +
-        ' minimum of 3 and a maximum of 30 characters.')
-    validateLengthOfString(lastName, 3, 50, 'The last name must be a string of characters, cannot be empty and have' +
-        ' a minimum of 3 and a maximum of 50 characters.')
+    validateForUserData(username, firstName, lastName)
 
     try {
         await User.findOneAndUpdate({email}, {
@@ -118,12 +113,12 @@ export const updateProfile = async (req: Request, res: Response) => {
             firstName,
             lastName
         });
-        const updateUser = await User.findOne({email});
+        const updatedUser = await User.findOne({email});
 
         return res.status(200).json({
-            username: updateUser.username,
-            firstName: updateUser.firstName,
-            lastName: updateUser.lastName,
+            username: updatedUser.username,
+            firstName: updatedUser.firstName,
+            lastName: updatedUser.lastName,
         })
 
     } catch (e) {
@@ -152,3 +147,34 @@ export const removeProfile = async (req: Request, res: Response) => {
         throw new ValidationError(e.message);
     }
 }
+
+
+export const completeUserData = async (req: Request, res: Response) => {
+    const {_id,username,firstName,lastName} = req.body;
+
+    const user = await User.findById({_id});
+    if (!user) {
+        throw new NotFoundError('No user found');
+    }
+
+    validateForUserData(username, firstName, lastName)
+
+    try {
+        await User.findByIdAndUpdate(_id, {
+            username,
+            firstName,
+            lastName
+        });
+        const updatedUser = await User.findById(_id);
+
+        return res.status(200).json({
+            username: updatedUser.username,
+            firstName: updatedUser.firstName,
+            lastName: updatedUser.lastName,
+        })
+
+    } catch (e) {
+        throw new ValidationError(e.message);
+    }
+}
+
