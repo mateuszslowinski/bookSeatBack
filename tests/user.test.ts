@@ -3,18 +3,20 @@ import supertest from 'supertest'
 import {database} from "../config/mongoDb";
 import {User} from "../models/User";
 import {app} from "../index";
-import {UserType} from "../types";
+import {CreatedUserType} from "../types";
+import {ObjectId} from "mongodb";
 
 const request = supertest(app);
 
 jest.setTimeout(9000);
 
 describe('user.ts', () => {
-    let defaultUser: UserType;
+    let defaultUser: CreatedUserType;
 
     beforeAll(async () => {
         await database();
         defaultUser = {
+            _id: new ObjectId(),
             username: "Janek",
             firstName: "janek",
             lastName: "nowak",
@@ -23,6 +25,8 @@ describe('user.ts', () => {
             token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzNzNhNjg5NGI2YjNmYWI4MWZlYzg1YiIsImlhdCI6MTY2ODUyMzY1NywiZXhwIjoxNjY5NzMzMjU3fQ.iAE_OMblKgmAda10Z4nyIiQzXChqgxljNDetbiadJTM",
             favoritePlaces: [],
             isAdmin: false,
+            createdAt: new Date(),
+            updateAt: new Date()
         }
 
         await User.deleteMany();
@@ -138,6 +142,26 @@ describe('user.ts', () => {
         });
     });
 
+    describe("POST /api/profile", () => {
+        it("Checking route to put user complete data", async () => {
+            const users = await User.find();
+            const lastName = 'test';
+            const firstName='test2';
+            const username='test3'
+
+            const res = await request.post("/api/profile").set('Authorization', `Bearer ${defaultUser.token}`).send({
+                _id: users[0]._id,
+                lastName,
+                firstName,
+                username
+            });
+            expect(res.status).toBe(200);
+            expect(res.body.lastName).toBe(lastName)
+            expect(res.body.firstName).toBe(firstName)
+            expect(res.body.username).toBe(username)
+        });
+    });
+
     describe("PATCH /api/profile", () => {
         it("checking validation of first name ", async () => {
             const email = defaultUser.email;
@@ -250,4 +274,5 @@ describe('user.ts', () => {
             expect(res.body).toBe('The user was removed successfully')
         });
     });
+
 })
