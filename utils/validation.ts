@@ -23,3 +23,31 @@ export const validateNumber = (value: number, descOfError: string) => {
         throw new ValidationError(descOfError)
     }
 }
+
+
+export const validateForRestaurant = (name: string,
+                                      description: string,
+                                      street: string,
+                                      buildingNumber: string,
+                                      zipCode: string,
+                                      city: string,
+                                      availableSeats: number,
+                                      lat: number,
+                                      lon: number
+) => {
+    validateLengthOfString(name, 3, 40, 'The restaurant name must be a string of characters, cannot be empty and have' +
+        ' a minimum of 3 and a maximum of 40 characters.');
+    validateLengthOfString(description, 1, 2000, 'The restaurant description must be a string of characters, cannot' +
+        ' be empty and have a minimum of 1 and a maximum of 2000 characters.');
+    validateLengthOfString(street, 1, 100, 'The street address name must be a string of characters, cannot be' +
+        ' empty and have a minimum of 1 and a maximum of 100 characters.');
+    validateLengthOfString(buildingNumber, 1, 5, 'The building number address name must be a string of' +
+        ' characters,cannot be empty and have a minimum of 1 and a maximum of 5 characters.');
+    validateLengthOfString(zipCode, 1, 10, 'The zip code address name must be a string of characters,' +
+        ' cannot be empty and have a minimum of 1 and a maximum of 10 characters.');
+    validateLengthOfString(city, 1, 50, 'The city address name must be a string of characters,' +
+        ' cannot be empty and have a minimum of 1 and a maximum of 50 characters.');
+    validateNumber(availableSeats, 'Available spaces must be a number and be greater than 0');
+    validateNumber(lat, 'Latitude must be a number and be greater than 0');
+    validateNumber(lon, 'Longitude must be a number and be greater than 0');
+}

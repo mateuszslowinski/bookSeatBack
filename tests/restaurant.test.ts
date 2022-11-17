@@ -1,12 +1,14 @@
 import supertest from "supertest";
 import {app} from "../index";
-import {Restaurant} from "../models/Restaurant";
-import {RestaurantType, TypeOfRestaurant} from "../types";
 import mongoose from "mongoose";
+import {ObjectId} from "mongodb";
 import {database} from "../config/mongoDb";
+import {Restaurant} from "../models/Restaurant";
+import {CreatedRestaurantType, TypeOfRestaurant} from "../types";
 
 
-export const defaultRestaurant: RestaurantType = {
+export const defaultRestaurant: CreatedRestaurantType = {
+    _id: new ObjectId(),
     name: "Janek",
     availableSeats: 4,
     address: {
@@ -20,7 +22,9 @@ export const defaultRestaurant: RestaurantType = {
     rating: 0,
     numberOfRating: 0,
     lat: 3,
-    lon: 3
+    lon: 3,
+    createdAt: new Date(),
+    updateAt: new Date()
 }
 const request = supertest(app);
 
@@ -37,9 +41,9 @@ describe('restaurant.test.ts', () => {
         await mongoose.connection.close();
     });
 
-    describe("POST /restaurant", () => {
+    describe("POST /restaurants", () => {
         it("checking the validation of the restaurant name when creating a new restaurant", async () => {
-            const res = await request.post("/api/restaurant").send({
+            const res = await request.post("/api/restaurants").send({
                 ...defaultRestaurant,
                 name: 'we'
             });
@@ -49,9 +53,9 @@ describe('restaurant.test.ts', () => {
         });
     });
 
-    describe("POST /restaurant", () => {
+    describe("POST /restaurants", () => {
         it("checking the validation of the restaurant description when creating a new restaurant", async () => {
-            const res = await request.post("/api/restaurant").send({
+            const res = await request.post("/api/restaurants").send({
                 ...defaultRestaurant,
                 description: ''
             });
@@ -61,9 +65,9 @@ describe('restaurant.test.ts', () => {
         });
     });
 
-    describe("POST /restaurant", () => {
+    describe("POST /restaurants", () => {
         it("checking the validation of the restaurant street address when creating a new restaurant", async () => {
-            const res = await request.post("/api/restaurant").send({
+            const res = await request.post("/api/restaurants").send({
                 ...defaultRestaurant,
                 address: {
                     ...defaultRestaurant.address,
@@ -75,9 +79,9 @@ describe('restaurant.test.ts', () => {
                 ' empty and have a minimum of 1 and a maximum of 100 characters.');
         });
     });
-    describe("POST /restaurant", () => {
+    describe("POST /restaurants", () => {
         it("checking the validation of the restaurant street building number when creating a new restaurant", async () => {
-            const res = await request.post("/api/restaurant").send({
+            const res = await request.post("/api/restaurants").send({
                 ...defaultRestaurant,
                 address: {
                     ...defaultRestaurant.address,
@@ -90,9 +94,9 @@ describe('restaurant.test.ts', () => {
         });
     });
 
-    describe("POST /restaurant", () => {
+    describe("POST /restaurants", () => {
         it("checking the validation of the restaurant zip code when creating a new restaurant", async () => {
-            const res = await request.post("/api/restaurant").send({
+            const res = await request.post("/api/restaurants").send({
                 ...defaultRestaurant,
                 address: {
                     ...defaultRestaurant.address,
@@ -105,9 +109,9 @@ describe('restaurant.test.ts', () => {
         });
     });
 
-    describe("POST /restaurant", () => {
+    describe("POST /restaurants", () => {
         it("checking the validation of the restaurant city when creating a new restaurant", async () => {
-            const res = await request.post("/api/restaurant").send({
+            const res = await request.post("/api/restaurants").send({
                 ...defaultRestaurant,
                 address: {
                     ...defaultRestaurant.address,
@@ -120,88 +124,249 @@ describe('restaurant.test.ts', () => {
         });
     });
 
-    describe("POST /restaurant", () => {
+    describe("POST /restaurants", () => {
         it("checking the validation of putting of negative number in the available seats when creating a new restaurant", async () => {
-            const res = await request.post("/api/restaurant").send({
+            const res = await request.post("/api/restaurants").send({
                 ...defaultRestaurant,
-                availableSeats:-2
+                availableSeats: -2
             });
             expect(res.status).toBe(400)
             expect(res.body.message).toBe('Available spaces must be a number and be greater than 0');
         });
     });
 
-    describe("POST /restaurant", () => {
+    describe("POST /restaurants", () => {
         it("checking the validation of putting of string in the available seats when creating a new restaurant", async () => {
-            const res = await request.post("/api/restaurant").send({
+            const res = await request.post("/api/restaurants").send({
                 ...defaultRestaurant,
-                availableSeats:"23"
+                availableSeats: "23"
             });
             expect(res.status).toBe(400)
             expect(res.body.message).toBe('Available spaces must be a number and be greater than 0');
         });
     });
 
-    describe("POST /restaurant", () => {
+    describe("POST /restaurants", () => {
         it("checking the validation of putting of string in the latitude when creating a new restaurant", async () => {
-            const res = await request.post("/api/restaurant").send({
+            const res = await request.post("/api/restaurants").send({
                 ...defaultRestaurant,
-                lat:"3"
+                lat: "3"
             });
             expect(res.status).toBe(400)
             expect(res.body.message).toBe('Latitude must be a number and be greater than 0');
         });
     });
 
-    describe("POST /restaurant", () => {
+    describe("POST /restaurants", () => {
         it("checking the validation of putting of incorrect number in the latitude when creating a new restaurant", async () => {
-            const res = await request.post("/api/restaurant").send({
+            const res = await request.post("/api/restaurants").send({
                 ...defaultRestaurant,
-                lat:0
+                lat: 0
             });
             expect(res.status).toBe(400)
             expect(res.body.message).toBe('Latitude must be a number and be greater than 0');
         });
     });
 
-    describe("POST /restaurant", () => {
+    describe("POST /restaurants", () => {
         it("checking the validation of putting of incorrect number in the longitude when creating a new restaurant", async () => {
-            const res = await request.post("/api/restaurant").send({
+            const res = await request.post("/api/restaurants").send({
                 ...defaultRestaurant,
-                lon:-4
+                lon: -4
             });
             expect(res.status).toBe(400)
             expect(res.body.message).toBe('Longitude must be a number and be greater than 0');
         });
     });
 
-    describe("POST /restaurant", () => {
+    describe("POST /restaurants", () => {
         it("checking the validation of putting of incorrect value in the type of restaurant  when creating a new" +
             " restaurant", async () => {
-            const res = await request.post("/api/restaurant").send({
+            const res = await request.post("/api/restaurants").send({
                 ...defaultRestaurant,
-                typeOfRestaurant:-4
+                typeOfRestaurant: -4
             });
             expect(res.status).toBe(400)
             expect(res.body.message).toBe('Type of restaurant cannot be empty and must be one of specify type of restaurant.');
         });
     });
-    describe("POST /restaurant", () => {
+    describe("POST /restaurants", () => {
         it("checking the validation of putting of correct value in the type of restaurant  when creating a new" +
             " restaurant", async () => {
-            const res = await request.post("/api/restaurant").send({
+            const res = await request.post("/api/restaurants").send({
                 ...defaultRestaurant,
-                typeOfRestaurant:'americanCuisine'
+                typeOfRestaurant: 'americanCuisine'
             });
             expect(res.status).toBe(201)
             expect(res.body.typeOfRestaurant).toBe(defaultRestaurant.typeOfRestaurant);
         });
     });
 
-    describe("POST /restaurant", () => {
+    describe("POST /restaurants", () => {
         it("checking to successful create a restaurant", async () => {
-            const res = await request.post("/api/restaurant").send(defaultRestaurant);
+            const res = await request.post("/api/restaurants").send(defaultRestaurant);
+
             expect(res.status).toBe(201);
+            expect(res.body.name).toBe(defaultRestaurant.name)
+        })
+    });
+
+    describe("GET /restaurants", () => {
+        it("checking to successful get a restaurants list", async () => {
+            const res = await request.get("/api/restaurants");
+            expect(res.status).toBe(200);
+            expect(res.body).not.toEqual([])
+            expect(res.body[0]._id).toBeDefined();
+        })
+    });
+
+    // describe("GET /restaurants", () => {
+    //     it("checking to validation of get empty restaurants list", async () => {
+    //         const res = await request.get("/api/restaurants");
+    //         expect(res.status).toBe(404);
+    //         expect(res.body.message).toEqual('No restaurants in database')
+    //     })
+    // });
+
+    describe("GET /restaurants/:id", () => {
+        it("checking to validation of putting incorrect id", async () => {
+            const id = new ObjectId()
+            const res = await request.get(`/api/restaurants/${id}`);
+
+            expect(res.status).toBe(404);
+            expect(res.body.message).toBe('This restaurant does not exist')
+            expect(res.body._id).not.toBeDefined();
+        })
+    });
+
+    describe("GET /restaurants/:id", () => {
+        it("checking to get restaurant by id", async () => {
+            const restaurants = await Restaurant.find();
+            const res = await request.get(`/api/restaurants/${restaurants[0]._id}`);
+
+            expect(res.status).toBe(200);
+            expect(res.body._id).toEqual(String(restaurants[0]._id))
+        })
+    });
+
+    describe("PATCH /restaurants/:id", () => {
+        it("checking for successful update restaurant name", async () => {
+            const restaurants = await Restaurant.find();
+            const name = 'Zmiana';
+            const res = await request.patch(`/api/restaurants/${restaurants[0]._id}`).send({
+                ...defaultRestaurant,
+                name
+            });
+
+            expect(res.status).toBe(200);
+            expect(res.body.name).toEqual(name)
+        })
+    });
+
+    describe("PATCH /restaurants/:id", () => {
+        it("checking for successful update restaurant description", async () => {
+            const restaurants = await Restaurant.find();
+            const description = 'Zmiana';
+            const res = await request.patch(`/api/restaurants/${restaurants[0]._id}`).send({
+                ...defaultRestaurant,
+                description
+            });
+
+            expect(res.status).toBe(200);
+            expect(res.body.description).toEqual(description)
+        })
+    });
+
+    describe("PATCH /restaurants/:id", () => {
+        it("checking for successful update restaurant address", async () => {
+            const restaurants = await Restaurant.find();
+            const address = {
+                street: 'zmiana',
+                buildingNumber: '23',
+                zipCode: '11-022',
+                city: 'tarnow',
+            }
+            const res = await request.patch(`/api/restaurants/${restaurants[0]._id}`).send({
+                ...defaultRestaurant,
+                address
+            });
+            expect(res.status).toBe(200);
+            expect(res.body.address).toEqual(address)
+        })
+    });
+    describe("PATCH /restaurants/:id", () => {
+        it("checking for successful update restaurant available seats", async () => {
+            const restaurants = await Restaurant.find();
+            const availableSeats = 1;
+
+            const res = await request.patch(`/api/restaurants/${restaurants[0]._id}`).send({
+                ...defaultRestaurant,
+                availableSeats
+            });
+            expect(res.status).toBe(200);
+            expect(res.body.availableSeats).toEqual(availableSeats)
+        })
+    });
+
+    describe("PATCH /restaurants/:id", () => {
+        it("checking for successful update restaurant type of restaurant", async () => {
+            const restaurants = await Restaurant.find();
+            const typeOfRestaurant = 'polishCuisine';
+
+            const res = await request.patch(`/api/restaurants/${restaurants[0]._id}`).send({
+                ...defaultRestaurant,
+                typeOfRestaurant
+            });
+            expect(res.status).toBe(200);
+            expect(res.body.typeOfRestaurant).toEqual(typeOfRestaurant)
+        })
+    });
+
+    describe("PATCH /restaurants/:id", () => {
+        it("checking for successful update restaurant latitude", async () => {
+            const restaurants = await Restaurant.find();
+            const lat = 11;
+
+            const res = await request.patch(`/api/restaurants/${restaurants[0]._id}`).send({
+                ...defaultRestaurant,
+                lat
+            });
+            expect(res.status).toBe(200);
+            expect(res.body.lat).toEqual(lat)
+        })
+    });
+
+    describe("PATCH /restaurants/:id", () => {
+        it("checking for successful update restaurant Longitude", async () => {
+            const restaurants = await Restaurant.find();
+            const lon = 111;
+
+            const res = await request.patch(`/api/restaurants/${restaurants[0]._id}`).send({
+                ...defaultRestaurant,
+                lon
+            });
+            expect(res.status).toBe(200);
+            expect(res.body.lon).toEqual(lon)
+        })
+    });
+
+    describe("DELETE /restaurants/:id", () => {
+        it("checking for remove restaurant by unexciting id", async () => {
+            const id = new ObjectId()
+            const res = await request.delete(`/api/restaurants/${id}`)
+
+            expect(res.status).toBe(404);
+            expect(res.body.message).toEqual('This restaurant does not exist')
+        })
+    });
+
+    describe("DELETE /restaurants/:id", () => {
+        it("checking for successful remove restaurant", async () => {
+            const restaurants = await Restaurant.find();
+
+            const res = await request.delete(`/api/restaurants/${restaurants[0]._id}`)
+            expect(res.status).toBe(201);
+            expect(res.body.message).toEqual('The restaurant was successfully removed')
         })
     });
 

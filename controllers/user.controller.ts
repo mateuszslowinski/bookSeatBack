@@ -160,5 +160,4 @@ export const removeProfile = async (req: Request, res: Response) => {
     } catch (e) {
         throw new ValidationError(e.message);
     }
-
 }

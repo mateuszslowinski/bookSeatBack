@@ -1,7 +1,18 @@
 import express from "express"
-import {createRestaurant} from "../controllers/restaurant.controller";
+import {
+    createRestaurant,
+    editRestaurant,
+    getListOfRestaurants,
+    getRestaurant, removeRestaurant
+} from "../controllers/restaurant.controller";
 
 
 export const restaurantRouter = express.Router()
 
-restaurantRouter.post('/',createRestaurant)
+restaurantRouter
+    .get('/', getListOfRestaurants)
+    .get('/:id', getRestaurant)
+    .post('/', createRestaurant)
+    .patch('/:id', editRestaurant)
+    .delete('/:id',removeRestaurant)
+
