@@ -248,4 +248,106 @@ describe('restaurant.test.ts', () => {
             expect(res.body._id).toEqual(String(restaurants[0]._id))
         })
     });
+
+    describe("PATCH /restaurants/:id", () => {
+        it("checking for successful update restaurant name", async () => {
+            const restaurants = await Restaurant.find();
+            const name = 'Zmiana';
+            const res = await request.patch(`/api/restaurants/${restaurants[0]._id}`).send({
+                ...defaultRestaurant,
+                name
+            });
+
+            expect(res.status).toBe(200);
+            expect(res.body.name).toEqual(name)
+        })
+    });
+
+    describe("PATCH /restaurants/:id", () => {
+        it("checking for successful update restaurant description", async () => {
+            const restaurants = await Restaurant.find();
+            const description = 'Zmiana';
+            const res = await request.patch(`/api/restaurants/${restaurants[0]._id}`).send({
+                ...defaultRestaurant,
+                description
+            });
+
+            expect(res.status).toBe(200);
+            expect(res.body.description).toEqual(description)
+        })
+    });
+
+    describe("PATCH /restaurants/:id", () => {
+        it("checking for successful update restaurant address", async () => {
+            const restaurants = await Restaurant.find();
+            const address = {
+                street: 'zmiana',
+                buildingNumber: '23',
+                zipCode: '11-022',
+                city: 'tarnow',
+            }
+            const res = await request.patch(`/api/restaurants/${restaurants[0]._id}`).send({
+                ...defaultRestaurant,
+                address
+            });
+            expect(res.status).toBe(200);
+            expect(res.body.address).toEqual(address)
+        })
+    });
+    describe("PATCH /restaurants/:id", () => {
+        it("checking for successful update restaurant available seats", async () => {
+            const restaurants = await Restaurant.find();
+            const availableSeats = 1;
+
+            const res = await request.patch(`/api/restaurants/${restaurants[0]._id}`).send({
+                ...defaultRestaurant,
+                availableSeats
+            });
+            expect(res.status).toBe(200);
+            expect(res.body.availableSeats).toEqual(availableSeats)
+        })
+    });
+
+    describe("PATCH /restaurants/:id", () => {
+        it("checking for successful update restaurant type of restaurant", async () => {
+            const restaurants = await Restaurant.find();
+            const typeOfRestaurant = 'polishCuisine';
+
+            const res = await request.patch(`/api/restaurants/${restaurants[0]._id}`).send({
+                ...defaultRestaurant,
+                typeOfRestaurant
+            });
+            expect(res.status).toBe(200);
+            expect(res.body.typeOfRestaurant).toEqual(typeOfRestaurant)
+        })
+    });
+
+    describe("PATCH /restaurants/:id", () => {
+        it("checking for successful update restaurant latitude", async () => {
+            const restaurants = await Restaurant.find();
+            const lat = 11;
+
+            const res = await request.patch(`/api/restaurants/${restaurants[0]._id}`).send({
+                ...defaultRestaurant,
+                lat
+            });
+            expect(res.status).toBe(200);
+            expect(res.body.lat).toEqual(lat)
+        })
+    });
+
+    describe("PATCH /restaurants/:id", () => {
+        it("checking for successful update restaurant Longitude", async () => {
+            const restaurants = await Restaurant.find();
+            const lon = 111;
+
+            const res = await request.patch(`/api/restaurants/${restaurants[0]._id}`).send({
+                ...defaultRestaurant,
+                lon
+            });
+            expect(res.status).toBe(200);
+            expect(res.body.lon).toEqual(lon)
+        })
+    });
+
 })
