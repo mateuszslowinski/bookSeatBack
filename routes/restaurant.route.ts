@@ -1,11 +1,17 @@
 import express from "express"
-import {createRestaurant, getListOfRestaurants, getRestaurant} from "../controllers/restaurant.controller";
+import {
+    createRestaurant,
+    editRestaurant,
+    getListOfRestaurants,
+    getRestaurant
+} from "../controllers/restaurant.controller";
 
 
 export const restaurantRouter = express.Router()
 
 restaurantRouter
     .get('/', getListOfRestaurants)
-    .get('/:id',getRestaurant)
+    .get('/:id', getRestaurant)
     .post('/', createRestaurant)
+    .patch('/:id', editRestaurant)
 
