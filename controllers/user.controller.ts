@@ -6,7 +6,7 @@ import {NotFoundError, ValidationError} from "../utils/error";
 import {User} from "../models/User";
 
 export const userRegister = async (req: Request, res: Response) => {
-    const {username, email, password, firstName, lastName, favoritePlaces} = req.body;
+    const {email, password} = req.body;
 
     const checkEmail = await User.findOne({email});
     if (checkEmail) {
@@ -23,25 +23,16 @@ export const userRegister = async (req: Request, res: Response) => {
         const encryptedPassword = await bcrypt.hash(password, salt);
 
         const user = await new User({
-            username,
             email,
             password: encryptedPassword,
             isAdmin: email === process.env.ADMIN_EMAIL,
-            favoritePlaces,
-            firstName,
-            lastName,
         }).save();
 
         return res.status(201).json({
             id: user._id,
-            username: user.username,
             email: user.email,
             isAdmin: user.isAdmin,
-            favoritePlaces: user.favoritePlaces,
-            firstName: user.firstName,
-            lastName: user.lastName,
             token: generateToken({id: user._id}, '14d'),
-
         })
     } catch (e) {
         throw new ValidationError(e.message);
