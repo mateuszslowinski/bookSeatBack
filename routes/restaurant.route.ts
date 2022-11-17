@@ -3,7 +3,7 @@ import {
     createRestaurant,
     editRestaurant,
     getListOfRestaurants,
-    getRestaurant
+    getRestaurant, removeRestaurant
 } from "../controllers/restaurant.controller";
 
 
@@ -14,4 +14,5 @@ restaurantRouter
     .get('/:id', getRestaurant)
     .post('/', createRestaurant)
     .patch('/:id', editRestaurant)
+    .delete('/:id',removeRestaurant)
 
