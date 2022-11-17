@@ -57,4 +57,16 @@ export const getListOfRestaurants = async (req: Request, res: Response) => {
         throw new ValidationError(e.message)
     }
 }
-
+export const getRestaurant = async (req: Request, res: Response) => {
+    const {id} = req.params;
+    const restaurant = await Restaurant.findById({_id: id});
+    if (!restaurant) {
+        throw new NotFoundError("This restaurant does not exist")
+    }
+    try {
+        await restaurant.save();
+        res.status(200).json(restaurant);
+    } catch (e) {
+        throw new ValidationError(e.message)
+    }
+}
