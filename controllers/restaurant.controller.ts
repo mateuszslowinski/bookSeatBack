@@ -84,6 +84,20 @@ export const editRestaurant = async (req: Request, res: Response) => {
     } catch (e) {
         throw new ValidationError(e.message)
     }
+}
 
+export const removeRestaurant = async (req: Request, res: Response) => {
+    const {id} = req.params;
 
+    const isRestaurant = await Restaurant.findById({_id: id});
+    if (!isRestaurant) {
+        throw new NotFoundError("This restaurant does not exist")
+    }
+
+    try {
+        await Restaurant.findByIdAndRemove({_id: id});
+        res.status(201).json({message: 'The restaurant was successfully removed'})
+    } catch (e) {
+        throw new ValidationError(e.message)
+    }
 }
