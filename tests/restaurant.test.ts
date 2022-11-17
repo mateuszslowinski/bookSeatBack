@@ -350,4 +350,24 @@ describe('restaurant.test.ts', () => {
         })
     });
 
+    describe("DELETE /restaurants/:id", () => {
+        it("checking for remove restaurant by unexciting id", async () => {
+            const id = new ObjectId()
+            const res = await request.delete(`/api/restaurants/${id}`)
+
+            expect(res.status).toBe(404);
+            expect(res.body.message).toEqual('This restaurant does not exist')
+        })
+    });
+
+    describe("DELETE /restaurants/:id", () => {
+        it("checking for successful remove restaurant", async () => {
+            const restaurants = await Restaurant.find();
+
+            const res = await request.delete(`/api/restaurants/${restaurants[0]._id}`)
+            expect(res.status).toBe(201);
+            expect(res.body.message).toEqual('The restaurant was successfully removed')
+        })
+    });
+
 })
