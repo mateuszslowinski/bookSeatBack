@@ -8,7 +8,6 @@ interface UserModal extends UserType, Document {}
 const userSchema = new mongoose.Schema({
         username: {
             type: String,
-            required: [true, 'username name is required'],
             trim: true,
             text: true,
             lowercase: true,
@@ -17,7 +16,6 @@ const userSchema = new mongoose.Schema({
         },
         firstName: {
             type: String,
-            required: [true, 'first name is required'],
             trim: true,
             text: true,
             minlength:3,
@@ -25,7 +23,6 @@ const userSchema = new mongoose.Schema({
         },
         lastName: {
             type: String,
-            required: [true, 'last  name is required'],
             trim: true,
             text: true,
             minlength:3,

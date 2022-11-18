@@ -51,3 +51,12 @@ export const validateForRestaurant = (name: string,
     validateNumber(lat, 'Latitude must be a number and be greater than 0');
     validateNumber(lon, 'Longitude must be a number and be greater than 0');
 }
+
+export const validateForUserData = (username: string, firstName: string, lastName: string) => {
+    validateLengthOfString(username, 3, 15, 'The user name must be a string of characters, cannot be empty and have a minimum of 3 and a maximum of 15 characters.')
+    validateLengthOfString(firstName, 3, 30, 'The first name must be a string of characters, cannot be empty and' +
+        ' have a' +
+        ' minimum of 3 and a maximum of 30 characters.')
+    validateLengthOfString(lastName, 3, 50, 'The last name must be a string of characters, cannot be empty and have' +
+        ' a minimum of 3 and a maximum of 50 characters.')
+}
